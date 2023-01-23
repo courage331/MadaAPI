@@ -1,0 +1,14 @@
+naver :
+  keyword :
+    accessKey : 0100000000138bb119fcc9beff61b42d84302bec7765ec74f10c27be2c9a6337a4a2f8abbc
+    secretKey : AQAAAAATi7EZ/Mm+/2G0LYQwK+x3+bCPHlYe3Bme9Ma/tuVjwQ==
+    customerId : 1128231
+  search :
+    clientId : 2Iz2geTyL3MntmUyYLdT
+    clientSecret : 34k2jAsDQu
+
+selenium :
+  driver :
+    id : webdriver.chrome.driver
+    path : /Users/kimjimin/chromedriver
+
