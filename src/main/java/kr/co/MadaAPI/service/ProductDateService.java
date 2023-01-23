@@ -70,8 +70,25 @@ public class ProductDateService {
             //System.out.println(map);
             ProductDateVo productDateVo = new ProductDateVo();
             productDateVo.setProductId(map.get("id").toString());
-            productDateVo.setReviewAmount(map.get("reviewAmount").toString());
-            productDateVo.setSaleAmount(map.get("saleAmount").toString());
+
+            String reviewAmountString = map.get("reviewAmount").toString().replace("{","").replace("}","");
+            String [] reviewAmountArray = reviewAmountString.split("[=|,]");
+            Map<String,String> reviewAmountMap = new HashMap();
+            System.out.println(Arrays.toString(reviewAmountArray));
+            for(int i=0; i<reviewAmountArray.length; i+=2){
+                reviewAmountMap.put(reviewAmountArray[i].trim(),reviewAmountArray[i+1].trim());
+            }
+            //averageReviewScore=4.86, generalReviewDisSatisfactionCount=0, generalReviewNormalCount=0, generalReviewSatisfactionCount=0, premiumReviewCount=0, premiumReviewHighlyRecommendationCount=0, premiumReviewNormalCount=0, premiumReviewNotRecommendationCount=0, premiumReviewRecommendationCount=0, productSatisfactionPercent=0, score1ReviewCount=3, score2ReviewCount=7, score3ReviewCount=35, score4ReviewCount=97, score5ReviewCount=1249, totalReviewCount=1391
+            productDateVo.setReviewAmount(reviewAmountMap);
+
+            String saleAmountString = map.get("saleAmount").toString().replace("{","").replace("}","");
+            String [] saleAmountArray = saleAmountString.split("[=|,]");
+            Map<String,String> saleAmountMap = new HashMap();
+            for(int i=0; i<saleAmountArray.length; i+=2){
+                saleAmountMap.put(saleAmountArray[i].trim(),saleAmountArray[i+1].trim());
+            }
+            //"saleAmount": "{cumulationSaleCount=4109, recentSaleCount=16}",
+            productDateVo.setSaleAmount(saleAmountMap);
 
             Map<String,Object> rerepresentImageMap = (Map<String, Object>)map.get("representImage");
             productDateVo.setThumbnail(rerepresentImageMap.get("url").toString());

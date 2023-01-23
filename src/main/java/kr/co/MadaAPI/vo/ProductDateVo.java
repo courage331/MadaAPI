@@ -10,8 +10,8 @@ import lombok.*;
 public class ProductDateVo {
 
         String productId;
-        String reviewAmount;
-        String saleAmount;
+        Object reviewAmount;
+        Object saleAmount;
         String thumbnail;
         String regDate;
         Object delivery;
