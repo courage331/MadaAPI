@@ -73,6 +73,8 @@ public class KeywordService {
         //options.addArguments("--start-maximized");
         //options.addArguments("--disable-popup-blocking");
         options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
 
         driver = new ChromeDriver(options);
 
