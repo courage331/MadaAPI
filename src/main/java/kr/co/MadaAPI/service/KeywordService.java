@@ -90,7 +90,7 @@ public class KeywordService {
             //String keywordArray = (String) js.executeScript("return document.querySelector(\"head > meta:nth-child(6)\")");
             String [] keywordArray = keyword.split(",");
 
-            driver.close();
+            //driver.close();
 
             Set<String> set = new HashSet<String>(Arrays.asList(keywordArray));
             if(set.contains("")) set.remove("");
@@ -106,7 +106,7 @@ public class KeywordService {
             responseInfo.setReturnCode(-1);
             responseInfo.setReturnMsg("키워드 조회 실패");
         }
-        driver.close();
+        //driver.close();
         return responseInfo;
     }
 

@@ -101,7 +101,7 @@ public class ProductDateService {
             responseInfo.setReturnMsg("등록일자 조회 실패");
             responseInfo.setData(e.toString());
         }
-        driver.close();
+        //driver.close();
         return responseInfo;
     }
 }

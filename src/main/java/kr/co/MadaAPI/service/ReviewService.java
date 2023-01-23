@@ -64,7 +64,7 @@ public class ReviewService {
             String productNo = (String) js.executeScript("return __PRELOADED_STATE__.product.A.productNo");
             String merchantNo = (String) js.executeScript("return __PRELOADED_STATE__.product.A.channel.naverPaySellerNo");
             //System.out.println(productNo+" "+merchantNo);
-            driver.close();
+            //driver.close();
             resultList =  getReview(reviewCount, productNo, merchantNo);
 
             responseInfo.setReturnCode(0);
@@ -76,7 +76,7 @@ public class ReviewService {
             responseInfo.setReturnMsg("리뷰 조회 실패");
             responseInfo.setData(e.toString());
         }
-        driver.close();
+        //driver.close();
         return responseInfo;
     }
 
