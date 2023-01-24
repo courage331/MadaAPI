@@ -76,7 +76,7 @@ public class ProductDateService {
             String reviewAmountString = map.get("reviewAmount").toString().replace("{","").replace("}","");
             String [] reviewAmountArray = reviewAmountString.split("[=|,]");
             Map<String,String> reviewAmountMap = new HashMap();
-            System.out.println(Arrays.toString(reviewAmountArray));
+            //System.out.println(Arrays.toString(reviewAmountArray));
             for(int i=0; i<reviewAmountArray.length; i+=2){
                 reviewAmountMap.put(reviewAmountArray[i].trim(),reviewAmountArray[i+1].trim());
             }
@@ -120,7 +120,7 @@ public class ProductDateService {
             responseInfo.setReturnMsg("등록일자 조회 실패");
             responseInfo.setData(e.toString());
         }
-        //driver.close();
+        driver.quit();
         return responseInfo;
     }
 }

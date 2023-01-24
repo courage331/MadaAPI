@@ -56,13 +56,14 @@ public class ReviewService {
         try {
             driver.get(url);
             driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-            String reviewCount = driver.findElement(By.xpath("/html/body/div/div/div[3]/div[2]/div[2]/div/div[3]/div[3]/ul/li[3]/a/span")).getText();
+            //String reviewCount = driver.findElement(By.xpath("/html/body/div/div/div[3]/div[2]/div[2]/div/div[3]/div[3]/ul/li[3]/a/span")).getText();
             //log.info("전체 리뷰 갯수 : "+reviewCount);
 
             JavascriptExecutor js = (JavascriptExecutor) driver;
             String productNo = (String) js.executeScript("return __PRELOADED_STATE__.product.A.productNo");
             String merchantNo = (String) js.executeScript("return __PRELOADED_STATE__.product.A.channel.naverPaySellerNo");
-            //System.out.println(productNo+" "+merchantNo);
+            String reviewCount = String.valueOf(js.executeScript("return __PRELOADED_STATE__.product.A.reviewAmount.totalReviewCount"));
+            //System.out.println(reviewCount);
             //driver.close();
             resultList =  getReview(reviewCount, productNo, merchantNo);
 
@@ -75,7 +76,7 @@ public class ReviewService {
             responseInfo.setReturnMsg("리뷰 조회 실패");
             responseInfo.setData(e.toString());
         }
-        //driver.close();
+        driver.quit();
         return responseInfo;
     }
 

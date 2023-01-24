@@ -105,7 +105,7 @@ public class KeywordService {
             responseInfo.setReturnCode(-1);
             responseInfo.setReturnMsg("키워드 조회 실패");
         }
-        //driver.close();
+        driver.quit();
         return responseInfo;
     }
 
