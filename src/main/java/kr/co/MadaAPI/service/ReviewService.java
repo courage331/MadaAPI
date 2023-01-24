@@ -19,6 +19,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -56,8 +58,16 @@ public class ReviewService {
         try {
             driver.get(url);
             driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-            //String reviewCount = driver.findElement(By.xpath("/html/body/div/div/div[3]/div[2]/div[2]/div/div[3]/div[3]/ul/li[3]/a/span")).getText();
-            //log.info("전체 리뷰 갯수 : "+reviewCount);
+
+            HttpURLConnection c= (HttpURLConnection)new URL(url).openConnection();
+            // set the HEAD request with setRequestMethod
+            c.setRequestMethod("HEAD");
+            // connection started and get response code
+            c.connect();
+            int r = c.getResponseCode();
+            if(r == 404){
+                return new ResponseInfo(-2,"상품이 존재하지 않습니다.");
+            }
 
             JavascriptExecutor js = (JavascriptExecutor) driver;
             String productNo = (String) js.executeScript("return __PRELOADED_STATE__.product.A.productNo");

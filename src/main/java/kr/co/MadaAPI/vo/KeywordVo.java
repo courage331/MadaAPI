@@ -13,15 +13,15 @@ import lombok.Setter;
 public class KeywordVo {
 
     String relKeyword;
-    String monthlyPcQcCnt;
-    String monthlyMobileQcCnt;
-    String monthlyAvePcClkCnt;
-    String monthlyAveMobileClkCnt;
-    String monthlyAvePcCtr;
-    String monthlyAveMobileCtr;
-    String plAvgDepth;
-    String compIdx;
-    String total;
-    String clkCntSum;
+    int monthlyPcQcCnt;
+    int monthlyMobileQcCnt;
+    double monthlyAvePcClkCnt;
+    double monthlyAveMobileClkCnt;
+    double monthlyAvePcCtr;
+    double monthlyAveMobileCtr;
+    int plAvgDepth;
+    double compIdx;
+    long total;
+    long clkCntSum;
 
 }

@@ -27,6 +27,8 @@ import org.springframework.web.client.RestTemplate;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -80,7 +82,16 @@ public class KeywordService {
         try {
             driver.get(url);
             driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-            String reviewCount = driver.findElement(By.xpath("/html/body/div/div/div[3]/div[2]/div[2]/div/div[3]/div[3]/ul/li[3]/a/span")).getText();
+
+            HttpURLConnection c= (HttpURLConnection)new URL(url).openConnection();
+            // set the HEAD request with setRequestMethod
+            c.setRequestMethod("HEAD");
+            // connection started and get response code
+            c.connect();
+            int r = c.getResponseCode();
+            if(r == 404){
+                return new ResponseInfo(-2,"상품이 존재하지 않습니다.");
+            }
 
             JavascriptExecutor js = (JavascriptExecutor) driver;
             //String product = (String) js.executeScript("return __PRELOADED_STATE__.product.A.contentName");
@@ -151,22 +162,22 @@ public class KeywordService {
                 for(JsonElement jsonElement : keywordJsonArray){
                     if(jsonElement.getAsJsonObject().get("relKeyword").toString().replace("\"","").equals(keyword)){
                         KeywordVo keywordVo = new KeywordVo();
-                        int total = jsonObject2.getAsJsonObject().get("total").getAsInt();
-                        int clkCntSum = calcSum(jsonElement.getAsJsonObject().get("monthlyPcQcCnt").getAsString(), jsonElement.getAsJsonObject().get("monthlyMobileQcCnt").getAsString());
+                        long total = jsonObject2.getAsJsonObject().get("total").getAsLong();
+                        long clkCntSum = calcSum(jsonElement.getAsJsonObject().get("monthlyPcQcCnt").getAsString(), jsonElement.getAsJsonObject().get("monthlyMobileQcCnt").getAsString());
                         double compIdx = (double)total/clkCntSum;
                         compIdx = (Math.round(compIdx*100)/10000.0);
 
                         keywordVo.setRelKeyword(keyword);
-                        keywordVo.setMonthlyPcQcCnt(jsonElement.getAsJsonObject().get("monthlyPcQcCnt").getAsString().contains("<") ? "10" : jsonElement.getAsJsonObject().get("monthlyPcQcCnt").getAsString());
-                        keywordVo.setMonthlyMobileQcCnt(jsonElement.getAsJsonObject().get("monthlyMobileQcCnt").getAsString().contains("<") ? "10" : jsonElement.getAsJsonObject().get("monthlyMobileQcCnt").getAsString());
-                        keywordVo.setMonthlyAvePcClkCnt(jsonElement.getAsJsonObject().get("monthlyAvePcClkCnt").getAsString());
-                        keywordVo.setMonthlyAveMobileClkCnt(jsonElement.getAsJsonObject().get("monthlyAveMobileClkCnt").getAsString());
-                        keywordVo.setMonthlyAvePcCtr(jsonElement.getAsJsonObject().get("monthlyAvePcCtr").getAsString());
-                        keywordVo.setMonthlyAveMobileCtr(jsonElement.getAsJsonObject().get("monthlyAveMobileCtr").getAsString());
-                        keywordVo.setPlAvgDepth(jsonElement.getAsJsonObject().get("plAvgDepth").getAsString());
-                        keywordVo.setTotal(String.valueOf(total));
-                        keywordVo.setClkCntSum(String.valueOf(clkCntSum));
-                        keywordVo.setCompIdx(String.valueOf(compIdx));
+                        keywordVo.setMonthlyPcQcCnt(jsonElement.getAsJsonObject().get("monthlyPcQcCnt").getAsString().contains("<") ? 10 : jsonElement.getAsJsonObject().get("monthlyPcQcCnt").getAsInt());
+                        keywordVo.setMonthlyMobileQcCnt(jsonElement.getAsJsonObject().get("monthlyMobileQcCnt").getAsString().contains("<") ? 10 : jsonElement.getAsJsonObject().get("monthlyMobileQcCnt").getAsInt());
+                        keywordVo.setMonthlyAvePcClkCnt(jsonElement.getAsJsonObject().get("monthlyAvePcClkCnt").getAsDouble());
+                        keywordVo.setMonthlyAveMobileClkCnt(jsonElement.getAsJsonObject().get("monthlyAveMobileClkCnt").getAsDouble());
+                        keywordVo.setMonthlyAvePcCtr(jsonElement.getAsJsonObject().get("monthlyAvePcCtr").getAsDouble());
+                        keywordVo.setMonthlyAveMobileCtr(jsonElement.getAsJsonObject().get("monthlyAveMobileCtr").getAsDouble());
+                        keywordVo.setPlAvgDepth(jsonElement.getAsJsonObject().get("plAvgDepth").getAsInt());
+                        keywordVo.setTotal(total);
+                        keywordVo.setClkCntSum(clkCntSum);
+                        keywordVo.setCompIdx(compIdx);
                         keywordVoList.add(keywordVo);
                         break;
                     }
@@ -180,7 +191,7 @@ public class KeywordService {
         return keywordVoList;
     }
 
-    public int calcSum(String monthlyPcQcCnt, String monthlyMobileQcCnt){
+    public long calcSum(String monthlyPcQcCnt, String monthlyMobileQcCnt){
 
         try{
             if(monthlyPcQcCnt.contains("<")){
@@ -190,14 +201,11 @@ public class KeywordService {
             if(monthlyMobileQcCnt.contains("<")){
                 monthlyMobileQcCnt = "10";
             }
-            return Integer.parseInt(monthlyPcQcCnt)+Integer.parseInt(monthlyMobileQcCnt);
+            return Long.parseLong(monthlyPcQcCnt)+Long.parseLong(monthlyMobileQcCnt);
         }catch(Exception e){
             log.info("calcSum 오류 : " + e.toString());
             return 1;
         }
-
-
-
     }
 
     public String HmacAndBase64(String secret, String data, String Algorithms) throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
