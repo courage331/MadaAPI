@@ -55,12 +55,14 @@ public class ProductDateService {
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--single-process");
 
         driver = new ChromeDriver(options);
         Map<String,Integer> sortedMap = new HashMap<>();
         List<ReviewVo> resultList =new ArrayList();
 
         try{
+            log.info("Driver 시작");
             // 상품에 대한 정보 담겨있음
             driver.get(url);
             driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);

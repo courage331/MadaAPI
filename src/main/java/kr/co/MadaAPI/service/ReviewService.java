@@ -45,11 +45,10 @@ public class ReviewService {
 
         // WebDriver 옵션 설정
         ChromeOptions options = new ChromeOptions();
-        //options.addArguments("--start-maximized");
-        //options.addArguments("--disable-popup-blocking");
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--single-process");
 
         driver = new ChromeDriver(options);
         List<ReviewVo> resultList =new ArrayList();
