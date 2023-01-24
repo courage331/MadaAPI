@@ -68,6 +68,7 @@ public class ReviewService {
             if(r == 404){
                 return new ResponseInfo(-2,"상품이 존재하지 않습니다.");
             }
+            c.disconnect();
 
             JavascriptExecutor js = (JavascriptExecutor) driver;
             String productNo = (String) js.executeScript("return __PRELOADED_STATE__.product.A.productNo");

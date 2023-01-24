@@ -77,6 +77,7 @@ public class ProductDateService {
             if(r == 404){
                 return new ResponseInfo(-2,"상품이 존재하지 않습니다.");
             }
+            c.disconnect();
 
             JavascriptExecutor js = (JavascriptExecutor) driver;
             Map<String,Object> map = (Map<String, Object>) js.executeScript("return __PRELOADED_STATE__.product.A");

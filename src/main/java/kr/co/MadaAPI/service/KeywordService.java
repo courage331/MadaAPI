@@ -92,6 +92,7 @@ public class KeywordService {
             if(r == 404){
                 return new ResponseInfo(-2,"상품이 존재하지 않습니다.");
             }
+            c.disconnect();
 
             JavascriptExecutor js = (JavascriptExecutor) driver;
             //String product = (String) js.executeScript("return __PRELOADED_STATE__.product.A.contentName");
