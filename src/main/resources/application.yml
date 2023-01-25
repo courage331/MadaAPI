@@ -12,3 +12,6 @@ selenium :
     id : webdriver.chrome.driver
     #path : /Users/kimjimin/chromedriver
     path : /home/ec2-user/chromedriver
+
+server :
+  port : 1301
